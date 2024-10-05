@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js Project</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; background-color: rgb(20, 20, 20); }
+    </style>
+</head>
+<body>
+    <canvas id="c"></canvas>
+    <script type="importmap">
+        {
+          "imports": {
+            "three": "./node_modules/three/build/three.module.js"
+          }
+        }
+    </script>
+    <script type="module">
+        import * as THREE from 'three';
+
+        function main() {
+            const canvas = document.querySelector("#c");
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, canvas });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const loader = new THREE.TextureLoader();
+            const texture = loader.load('black-texture.png');
+
+            // Materiais
+            const baseSwordMaterial = new THREE.MeshPhongMaterial({
+                color: "black",
+                reflectivity: 0.4,
+                side: THREE.DoubleSide
+            });
+
+            const sideSwordMaterial = new THREE.MeshPhongMaterial({
+                color: "gray",
+                reflectivity: 2.5,
+                side: THREE.DoubleSide
+            });
+
+            const CylinderMaterial = new THREE.MeshPhongMaterial({
+                color: "#4a1f1f",
+                reflectivity: 0.4,
+                side: THREE.DoubleSide
+            });
+
+            const SphereMaterial = new THREE.MeshPhongMaterial({
+                color: "#888",
+                reflectivity: 0.4,
+                side: THREE.DoubleSide
+            });
+
+            const container = new THREE.BoxGeometry(0, 0, 0);
+            const containerMesh = new THREE.Mesh(container, []);
+
+            // Luzes
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+            directionalLight.position.set(0, 15, 20);
+            scene.add(directionalLight);
+
+            const spotLight = new THREE.SpotLight(0xffffff, 0.2);
+            spotLight.position.set(0, 2, 20);
+            spotLight.castShadow = true;
+            scene.add(spotLight);
+
+            const height = 18;
+            const thickness = 0;
+            const width = 1;
+
+            // Geometria da espada principal
+            const verticesSwordMain = new Float32Array([
+                0, height+2, thickness,
+                width+1, height, thickness,
+                width+1, 0, thickness,
+                -width-1, 0, thickness,
+                -width-1, height, thickness,
+                
+                0, height+1, thickness-1,
+                width, height, thickness-1,
+                width, 0, thickness-1,
+                -width, 0, thickness-1,
+                -width, height, thickness-1,
+
+                0, height+1, thickness+1,
+                width, height, thickness+1,
+                width, 0, thickness+1,
+                -width, 0, thickness+1,
+                -width, height, thickness+1,
+            ]);
+
+            const indicesSwordMain = [
+                0, 1, 4, // Face frontal
+                1, 2, 3, // Face inferior
+                3, 4, 1, // Face traseira
+                0, 4, 3, // Face esquerda
+                3, 2, 1, // Face direita
+                0, 3, 1, // Face superior
+
+                8, 9, 6, // Face traseira 2
+                5, 9, 8, // Face esquerda 2
+                8, 7, 6, // Face direita 2
+                5, 6, 9, // Face superior 2
+
+                13, 14, 11,
+                10, 14, 13,
+                13, 12, 11,
+                10, 13, 11,
+            ];
+
+            const verticesSwordSide = new Float32Array([
+                0, height+2, thickness,
+                width+1, height, thickness,
+                width, height, thickness-1,
+
+                0, height+2, thickness,
+                width, height, thickness-1,
+                0, height+1, thickness-1,
+
+                -width, height, thickness-1,
+                0, height+1, thickness-1,
+                -width-1, height, thickness,
+
+                0, height+1, thickness-1,
+                0, height+2, thickness,
+                -width-1, height, thickness,
+
+                -width-1, height, thickness,
+                -width, height, thickness+1,
+                0, height+2, thickness,
+
+                -width, height, thickness+1,
+                0, height+2, thickness,
+                0, height+1, thickness+1,
+
+                0, height+2, thickness,
+                0, height+1, thickness+1,
+                width+1, height, thickness,
+
+                width+1, height, thickness,
+                0, height+1, thickness+1,
+                width, height, thickness+1,
+
+                -width-1, height, thickness,
+                -width-1, 0, thickness,
+                -width, height, thickness+1,
+
+                -width-1, height, thickness,
+                -width, height, thickness+1,
+                -width, 0, thickness+1,
+
+                -width, 0, thickness+1,
+                -width-1, 0, thickness,
+                -1.5, 9, 0.5,
+
+                -width-1, height, thickness,
+                -width-1, 0, thickness,
+                -width, height, thickness-1,
+
+                -width-1, 0, thickness,
+                -width, 0, thickness-1,
+                -width, height, thickness-1,
+
+                width, 0, thickness+1,
+                width+1, 0, thickness,
+                width, height, thickness+1,
+
+                0, height+1, thickness+1,
+                width, height, thickness+1,
+                width+1, height, thickness,
+
+                width+1, 0, thickness,
+                width, height, thickness+1,
+                width+1, height, thickness,
+
+                width, 0, thickness-1,
+                width+1, height, thickness,
+                width, height, thickness-1,
+
+                width+1, 0, thickness,
+                width, 0, thickness-1,
+                width+1, height, thickness,
+
+                -width-1, 0, thickness,
+                -width, 0, thickness+1,
+                -width, 0, thickness-1,
+
+                width+1, 0, thickness,
+                width, 0, thickness+1,
+                width, 0, thickness-1,
+
+                width, 0, thickness+1,
+                -width, 0, thickness+1,
+                width, 0, thickness-1,
+
+                -width, 0, thickness+1,
+                -width, 0, thickness-1,
+                width, 0, thickness-1,
+            ]);
+
+            const indicesSwordSide = [
+                0, 1, 2,
+                3, 4, 5,
+                6, 7, 8,
+                9, 10, 11,
+                12, 13, 14,
+                15, 16, 17,
+                18, 19, 20,
+                21, 22, 23,
+                24, 25, 26,
+                27, 28, 29,
+                30, 31, 32,
+                33, 34, 35,
+                36, 37, 38,
+                39, 40, 41,
+                42, 43, 44,
+                45, 46, 47,
+                48, 49, 50,
+                51, 52, 53,
+                54, 55, 56,
+                57, 58, 59,
+                60, 61, 62,
+                63, 64, 65,
+            ];
+
+            const geometrySwordMain = new THREE.BufferGeometry();
+            geometrySwordMain.setAttribute('position', new THREE.BufferAttribute(verticesSwordMain, 3));
+            geometrySwordMain.setIndex(indicesSwordMain);
+            geometrySwordMain.computeVertexNormals();
+            const swordMain = new THREE.Mesh(geometrySwordMain, baseSwordMaterial);
+
+            const geometrySwordSide = new THREE.BufferGeometry();
+            geometrySwordSide.setAttribute('position', new THREE.BufferAttribute(verticesSwordSide, 3));
+            geometrySwordSide.setIndex(indicesSwordSide);
+            geometrySwordSide.computeVertexNormals();
+            const swordSide = new THREE.Mesh(geometrySwordSide, sideSwordMaterial);
+
+            swordMain.position.y = -5;
+            swordSide.position.y = -5;
+
+            containerMesh.add(swordMain);
+            containerMesh.add(swordSide);
+
+            const radiusTop = 0.30;
+            const radiusBottom = 0.30;
+            const heightCil = 8.0;
+            const radialSegments = 50;
+            const geometryCylinder = new THREE.CylinderGeometry(radiusTop, radiusBottom, heightCil, radialSegments);
+            const cylinder = new THREE.Mesh(geometryCylinder, CylinderMaterial);
+
+            const radius = 0.55;
+            const widthSegments = 30;
+            const heightSegments = 30;
+            const geometrySphere = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+            const sphere = new THREE.Mesh(geometrySphere, SphereMaterial);
+
+            //DRAGONSLAYER !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+            const decorationGeometry = new THREE.CylinderGeometry(1.4, 1.4, 2.4, 12, 12, false, 0, Math.PI);
+            const decorationMesh = new THREE.Mesh(decorationGeometry, sideSwordMaterial);
+            decorationMesh.rotation.x = Math.PI / 2;
+            decorationMesh.rotation.y = Math.PI / 2;
+
+            const decorationGeometrySmall = new THREE.CylinderGeometry(1, 1, 2.8, 12, 12, false, 0, Math.PI);
+            const decorationMeshSmall = new THREE.Mesh(decorationGeometrySmall, sideSwordMaterial);
+            decorationMeshSmall.rotation.x = Math.PI / 2;
+            decorationMeshSmall.rotation.y = Math.PI / 2;
+
+            decorationMesh.position.y = -5;
+            decorationMesh.position.z = 0;
+
+            decorationMeshSmall.position.y = -5;
+            decorationMeshSmall.position.z = 0;
+
+            cylinder.position.y = -5.5;
+            sphere.position.y = -9.5;
+
+            scene.add(cylinder);
+            scene.add(sphere);
+            scene.add(decorationMesh);
+            containerMesh.add(cylinder);
+            containerMesh.add(sphere);
+            containerMesh.add(decorationMesh);
+            containerMesh.add(decorationMeshSmall);
+
+            scene.add(containerMesh);
+
+            camera.position.z = 20;
+            camera.position.y = 2;
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            const animate = () => {
+                requestAnimationFrame(animate);
+                containerMesh.rotation.y -= 0.05;
+                renderer.render(scene, camera);
+            }
+
+            animate();
+        }
+
+        main();
+    </script>
+</body>
+</html>
