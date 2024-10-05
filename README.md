@@ -19,3 +19,14 @@
   
   <img src="https://private-user-images.githubusercontent.com/82726583/373911701-efb0c93d-f1f0-4ebd-8ad0-dd06de3abca7.jpg?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MjgxNjg5NTcsIm5iZiI6MTcyODE2ODY1NywicGF0aCI6Ii84MjcyNjU4My8zNzM5MTE3MDEtZWZiMGM5M2QtZjFmMC00ZWJkLThhZDAtZGQwNmRlM2FiY2E3LmpwZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNDEwMDUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjQxMDA1VDIyNTA1N1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWUyMzFmODBkYTliZmNjNmI1NmIyNTliOGM4NDFhM2UyNDU2NzYxMzVlNTUwMDI5ZjAzZmE0MWI1NWI3YTNkMTcmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.5xnnEvIoMRyhzNc35RmFOhxC7esNC19NmIC98bzoXVc" />
 </p>
+
+<h2 align="center">Getting Started</h2>
+<h3>Pre-requisites</h3>
+<p>Node.js (version X.X.X or higher)</p>
+<p>npm (usually comes with Node.js)</p>
+<p></p>Live Server (for running the project locally)</p>
+
+<h3>Running the project locally</h2>
+<p>git clone https://github.com/caio2983/Guts-Greatsword.git</p>
+<p>npm install</p>
+<p>click on Live Server</p>
