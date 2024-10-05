@@ -22,7 +22,7 @@
 
 <h2 align="center">Getting Started</h2>
 <h3>Pre-requisites</h3>
-<p>Node.js (version X.X.X or higher)</p>
+<p>Node.js (version 20.11.1 or higher)</p>
 <p>npm (usually comes with Node.js)</p>
 <p></p>Live Server (for running the project locally)</p>
 
